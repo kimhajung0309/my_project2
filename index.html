@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SpaceOut - 대학 신입생을 위한 공강 시간 활용 도우미" />
+  <title>SpaceOut 🎓 공강 시간 활용 도우미</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-icon" aria-hidden="true">🎓</span>
+        <h1 class="logo-text">SpaceOut</h1>
+        <p class="logo-sub">공강 시간 활용 도우미</p>
+      </div>
+      <nav class="main-nav" aria-label="주요 메뉴">
+        <button class="nav-btn active" data-tab="dashboard" aria-current="page">
+          <span aria-hidden="true">🏠</span> 대시보드
+        </button>
+        <button class="nav-btn" data-tab="timetable">
+          <span aria-hidden="true">📅</span> 시간표
+        </button>
+        <button class="nav-btn" data-tab="weekly">
+          <span aria-hidden="true">🗓️</span> 주간 맵
+        </button>
+        <button class="nav-btn" data-tab="friends">
+          <span aria-hidden="true">👥</span> 친구
+        </button>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="메뉴 열기" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN ========== -->
+  <main id="main-content">
+
+    <!-- ── 탭 1: 대시보드 ── -->
+    <section class="tab-panel active" id="tab-dashboard" aria-label="대시보드">
+
+      <!-- 공강 카운트다운 카드 -->
+      <div class="card countdown-card" role="region" aria-live="polite" aria-label="공강 카운트다운">
+        <div class="countdown-header">
+          <h2 id="countdown-label">⏳ 다음 수업까지 남은 공강 시간</h2>
+          <span class="tier-badge" id="tier-badge">–</span>
+        </div>
+        <p class="countdown-time" id="countdown-display">– : – –</p>
+        <p class="countdown-sub" id="countdown-sub">시간표를 입력하면 자동으로 계산돼요 📌</p>
+      </div>
+
+      <!-- 오늘 타임라인 -->
+      <section class="card" aria-label="오늘 타임라인">
+        <header class="card-header">
+          <h2>📊 오늘 타임라인</h2>
+          <time class="today-date" id="today-date"></time>
+        </header>
+        <div class="timeline-wrapper" role="img" aria-label="오늘 수업과 공강 블록 타임라인">
+          <div class="timeline-axis" id="timeline-axis"></div>
+          <div class="timeline-bar" id="timeline-bar">
+            <p class="empty-msg">시간표를 입력하면 타임라인이 여기에 표시됩니다.</p>
+          </div>
+        </div>
+        <div class="timeline-legend" aria-label="범례">
+          <span class="legend-item"><span class="dot dot-class"></span>수업</span>
+          <span class="legend-item"><span class="dot dot-gap"></span>공강</span>
+        </div>
+      </section>
+
+      <!-- 추천 카드 -->
+      <section class="card" aria-label="맞춤 활동 추천">
+        <header class="card-header">
+          <h2>✨ 지금 이런 걸 해보세요</h2>
+          <span class="rec-tier-label" id="rec-tier-label"></span>
+        </header>
+        <div class="rec-carousel" id="rec-carousel" role="list">
+          <p class="empty-msg">공강 블록이 계산되면 맞춤 추천이 나타납니다.</p>
+        </div>
+        <div class="carousel-dots" id="carousel-dots" aria-hidden="true"></div>
+      </section>
+
+    </section><!-- /tab-dashboard -->
+
+    <!-- ── 탭 2: 시간표 입력 ── -->
+    <section class="tab-panel" id="tab-timetable" aria-label="시간표 입력" hidden>
+
+      <div class="card">
+        <header class="card-header">
+          <h2>📝 내 시간표 등록</h2>
+        </header>
+
+        <form class="timetable-form" id="timetable-form" novalidate aria-label="수업 추가 폼">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-title">과목명 <span aria-hidden="true">*</span></label>
+              <input type="text" id="input-title" name="title" placeholder="예) 컴퓨터학개론" required maxlength="30" />
+            </div>
+            <div class="form-group">
+              <label for="input-day">요일 <span aria-hidden="true">*</span></label>
+              <select id="input-day" name="day" required>
+                <option value="">선택</option>
+                <option value="1">월요일</option>
+                <option value="2">화요일</option>
+                <option value="3">수요일</option>
+                <option value="4">목요일</option>
+                <option value="5">금요일</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-start">시작 시간 <span aria-hidden="true">*</span></label>
+              <input type="time" id="input-start" name="startTime" required min="07:00" max="22:00" />
+            </div>
+            <div class="form-group">
+              <label for="input-end">종료 시간 <span aria-hidden="true">*</span></label>
+              <input type="time" id="input-end" name="endTime" required min="07:00" max="22:00" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="input-location">강의실 (선택)</label>
+              <input type="text" id="input-location" name="location" placeholder="예) 정보과학관 201호" maxlength="40" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">➕ 수업 추가</button>
+            <button type="button" class="btn btn-secondary" id="load-sample-btn">📂 샘플 시간표 불러오기</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 등록된 수업 목록 -->
+      <div class="card">
+        <header class="card-header">
+          <h2>📋 등록된 수업 목록</h2>
+          <button class="btn btn-danger btn-sm" id="clear-all-btn">전체 삭제</button>
+        </header>
+        <div class="class-list-wrapper">
+          <table class="class-table" id="class-table" aria-label="등록된 수업 목록">
+            <thead>
+              <tr>
+                <th scope="col">요일</th>
+                <th scope="col">과목명</th>
+                <th scope="col">시간</th>
+                <th scope="col">강의실</th>
+                <th scope="col">삭제</th>
+              </tr>
+            </thead>
+            <tbody id="class-tbody">
+              <tr class="empty-row">
+                <td colspan="5">등록된 수업이 없습니다. 위 폼으로 추가해보세요! 🙂</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 공강 계산 결과 -->
+        <div class="gap-result-area" id="gap-result-area" hidden>
+          <h3>🔍 계산된 공강 블록</h3>
+          <div id="gap-blocks-list"></div>
+        </div>
+      </div>
+
+    </section><!-- /tab-timetable -->
+
+    <!-- ── 탭 3: 주간 공강 맵 ── -->
+    <section class="tab-panel" id="tab-weekly" aria-label="주간 공강 맵" hidden>
+      <div class="card">
+        <header class="card-header">
+          <h2>🗓️ 주간 공강 맵</h2>
+          <p class="card-desc">수업(파랑)과 공강(오렌지/초록)을 한눈에!</p>
+        </header>
+        <div class="weekly-grid-wrapper" role="img" aria-label="주간 공강 맵 그리드">
+          <div class="weekly-grid" id="weekly-grid"></div>
+        </div>
+        <div class="timeline-legend" aria-label="범례">
+          <span class="legend-item"><span class="dot dot-class"></span>수업</span>
+          <span class="legend-item"><span class="dot dot-micro"></span>마이크로 공강(&lt;45분)</span>
+          <span class="legend-item"><span class="dot dot-short"></span>숏 공강(45~90분)</span>
+          <span class="legend-item"><span class="dot dot-deep"></span>딥 공강(90~180분)</span>
+          <span class="legend-item"><span class="dot dot-mega"></span>메가 공강(180분+)</span>
+        </div>
+      </div>
+    </section><!-- /tab-weekly -->
+
+    <!-- ── 탭 4: 친구 공강 매칭 ── -->
+    <section class="tab-panel" id="tab-friends" aria-label="친구 공강 매칭" hidden>
+
+      <div class="card">
+        <header class="card-header">
+          <h2>👥 친구 시간표 매칭</h2>
+        </header>
+
+        <!-- 공유 코드 -->
+        <div class="share-section" aria-label="내 시간표 공유">
+          <p class="share-label">내 시간표 공유 코드</p>
+          <div class="share-code-box">
+            <code id="my-share-code" aria-live="polite">–</code>
+            <button class="btn btn-sm btn-secondary" id="copy-code-btn" aria-label="코드 복사">📋 복사</button>
+            <button class="btn btn-sm btn-primary" id="gen-code-btn">🔄 코드 생성</button>
+          </div>
+        </div>
+
+        <!-- 친구 추가 -->
+        <form class="friend-form" id="friend-form" aria-label="친구 추가 폼" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="friend-name">친구 이름</label>
+              <input type="text" id="friend-name" name="friendName" placeholder="예) 홍길동" maxlength="10" required />
+            </div>
+            <div class="form-group">
+              <label for="friend-code">친구 공유 코드</label>
+              <input type="text" id="friend-code" name="friendCode" placeholder="예) ABC123" maxlength="10" required />
+            </div>
+            <div class="form-group form-group-btn">
+              <button type="submit" class="btn btn-primary">➕ 친구 추가</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- 친구 목록 및 겹침 뷰 -->
+        <div id="friend-list-area">
+          <p class="empty-msg">아직 추가된 친구가 없어요. 친구 코드로 추가해보세요! 🤝</p>
+        </div>
+
+        <!-- 공강 매칭 결과 -->
+        <div class="overlap-result" id="overlap-result" hidden>
+          <h3>🎯 오늘 같이 밥 먹을 수 있는 친구</h3>
+          <div id="overlap-list"></div>
+        </div>
+      </div>
+
+    </section><!-- /tab-friends -->
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer" role="contentinfo">
+    <p>SpaceOut &copy; 2026 · 대학 신입생의 공강을 더 알차게 🌟</p>
+    <p class="footer-sub">HTML &amp; CSS &amp; JavaScript 순수 구현 포트폴리오 프로젝트</p>
+  </footer>
+
+  <!-- Toast 알림 -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="my.js"></script>
+</body>
+</html>
